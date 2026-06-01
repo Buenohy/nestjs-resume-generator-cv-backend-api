@@ -1,7 +1,6 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from "@nestjs/common";
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
-// Caminho corrigido apontando para a sua pasta generated/prisma
 import { PrismaClient } from "../generated/prisma/client";
 
 @Injectable()
