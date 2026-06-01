@@ -5,9 +5,32 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+// 🧱 MODELO 1: Repositório do Full Content (Experiências Avulsas)
+model Experience {
+  id        String   @id @default(uuid())
+  role      String // Cargo (ex: Frontend Developer)
+  company   String // Empresa (ex: Google)
+  url       String? // URL da Empresa (opcional)
+  date      String // Período (ex: "Janeiro 2022 - Atualmente")
+  details   String[] // Detalhes do Projeto (Nativo do Postgres)
+  stacks    String[] // Tecnologias usadas (Stacks)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// 📜 MODELO 2: Histórico do Resume Builder (Snapshots dos currículos criados)
+model ResumeHistory {
+  id            String   @id @default(uuid())
+  orderNumber   Int      @unique @default(autoincrement()) // ID sequencial #1, #2...
+  targetRole    String // Cargo Alvo
+  targetCompany String // Empresa Alvo
+  cvPayload     Json // JSONB seguro e dinâmico para salvar todo o CV
+  createdAt     DateTime @default(now())
 }
