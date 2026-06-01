@@ -1,0 +1,36 @@
+nestjs-resume-generator-cv-backend-api
+├── prisma/                             # 🗄️ Database and Migrations Folder
+│   ├── schema.prisma                   # Postgres table definitions (Experience and ResumeHistory models)
+│   └── migrations/                     # Chronological database schema changes history (DB version control)
+│
+├── prisma.config.ts                    # ⚙️ New centralized Prisma v7 configuration system
+├── docker-compose.yml                  # 🐋 Local orchestration of Bitnami's PostgreSQL container (Dev environment)
+├── Dockerfile                          # 📦 Multi-stage recipe for lightweight production packaging (Cloud ready)
+├── .prettierrc                         # Strict Prettier styling configuration (configured to doubleQuotes)
+├── tsconfig.json                       # ESM-first TypeScript settings compatible with Prisma v7 & NestJS
+│
+└── src/
+    ├── main.ts                         # 🚀 App entry point (Configures Fastify and registers global Zod Validation Pipe)
+    ├── app.module.ts                   # App root module (Imports and orchestrates global modules)
+    │
+    ├── prisma/                         # 🔌 Database connection module
+    │   ├── prisma.module.ts            # Exports the service globally
+    │   └── prisma.service.ts           # Instantiates Prisma Client v7 coupled to native Postgres Driver (pg)
+    │
+    ├── generated/                      # 🤖 Auto-generated Prisma code
+    │   └── prisma/                     # Custom strongly-typed Prisma Client v7 (.gitignore safe)
+    │
+    ├── experience/                     # 🧱 Experiences Domain (Full Content CRUD)
+    │   ├── experience.module.ts        # Registration of Experience routes and services
+    │   ├── experience.controller.ts    # Exposed HTTP Endpoints (POST, GET, PATCH, DELETE)
+    │   ├── experience.service.ts       # Persistence logic and Postgres queries using Prisma
+    │   └── dto/                        # 🛡️ Data Transfer Objects (Type Safety with Zod)
+    │       ├── create-experience.dto.ts # Strict Zod validation schema for creation (Required)
+    │       └── update-experience.dto.ts # Partial Zod validation schema for editing (Optional)
+    │
+    └── history/                        # 📜 History Domain (Resume Snapshots)
+        ├── history.module.ts           # Registration of History routes and services
+        ├── history.controller.ts       # Exposed HTTP Endpoints (POST, GET)
+        ├── history.service.ts          # Persists completed resumes in a dynamic JSONB column inside Postgres
+        └── dto/                        # 🛡️ Data Transfer Objects (Type Safety with Zod)
+            └── create-history.dto.ts   # Zod validation schema supporting dynamic JSON payloads (z.record)

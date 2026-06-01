@@ -1,0 +1,36 @@
+nestjs-resume-generator-cv-backend-api
+├── prisma/                             # 🗄️ Pasta do Banco de Dados e Migrações
+│   ├── schema.prisma                   # Definição das tabelas do Postgres (Experience e ResumeHistory)
+│   └── migrations/                     # Histórico de alterações e versionamento do banco (Git do Banco)
+│
+├── prisma.config.ts                    # ⚙️ Nova configuração centralizada do Prisma v7
+├── docker-compose.yml                  # 🐋 Orquestração local do PostgreSQL da Bitnami (Ambiente de Dev)
+├── Dockerfile                          # 📦 Receita Multi-stage para empacotamento leve de produção (Nuvem)
+├── .prettierrc                         # Configuração estrita de estilização do Prettier (aspas duplas)
+├── tsconfig.json                       # Configurações ESM-first compatíveis com Prisma v7 e NestJS
+│
+└── src/
+    ├── main.ts                         # 🚀 Ponto de entrada (Configura o Fastify e o Pipe Global de Validação do Zod)
+    ├── app.module.ts                   # Módulo raiz da API (Importa e gerencia os módulos globais)
+    │
+    ├── prisma/                         # 🔌 Módulo de conexão com o banco de dados
+    │   ├── prisma.module.ts            # Exporta o serviço globalmente
+    │   └── prisma.service.ts           # Inicializa o Prisma Client v7 acoplado ao Driver Postgres nativo (pg)
+    │
+    ├── generated/                      # 🤖 Código auto-gerado pelo Prisma
+    │   └── prisma/                     # O Prisma Client v7 tipado sob medida (.gitignore safe)
+    │
+    ├── experience/                     # 🧱 Domínio das Experiências (Full Content CRUD)
+    │   ├── experience.module.ts        # Registro de rotas e serviços de Experiência
+    │   ├── experience.controller.ts    # Endpoints HTTP expostos (POST, GET, PATCH, DELETE)
+    │   ├── experience.service.ts       # Lógica de persistência e consultas ao Postgres pelo Prisma
+    │   └── dto/                        # 🛡️ Objetos de Transferência de Dados (Segurança com Zod)
+    │       ├── create-experience.dto.ts # Esquema Zod de criação obrigatório
+    │       └── update-experience.dto.ts # Esquema Zod parcial (opcional) para atualizações
+    │
+    └── history/                        # 📜 Domínio do Histórico (Snapshots do Construtor)
+        ├── history.module.ts           # Registro de rotas e serviços de Histórico
+        ├── history.controller.ts       # Endpoints HTTP expostos (POST, GET)
+        ├── history.service.ts          # Salva o currículo em formato JSONB dinâmico no Postgres
+        └── dto/                        # 🛡️ Objetos de Transferência de Dados (Segurança com Zod)
+            └── create-history.dto.ts   # Esquema Zod com suporte a chaves dinâmicas (z.record)
