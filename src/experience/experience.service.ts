@@ -10,13 +10,19 @@ export class ExperienceService {
   // Criar nova experiência
   async create(dto: CreateExperienceDto) {
     return this.prisma.experience.create({
-      data: dto,
+      // Como mapeamos url de forma opcional/null no Zod, normalizamos para salvar vazio no banco se não vier nada
+      data: {
+        ...dto,
+        url: dto.url ?? "",
+        date: dto.date ?? "",
+      },
     });
   }
 
-  // Listar todas as experiências (Ordenadas das mais novas para as mais antigas)
-  async findAll() {
+  // Listar todas as experiências, filtrando opcionalmente pelo idioma da UI
+  async findAll(language?: string) {
     return this.prisma.experience.findMany({
+      where: language ? { language } : undefined,
       orderBy: {
         createdAt: "desc",
       },
@@ -33,9 +39,14 @@ export class ExperienceService {
       throw new NotFoundException("Experiência não encontrada");
     }
 
+    // Limpa eventuais undefined do dto antes de atualizar
+    const cleanDto = Object.fromEntries(
+      Object.entries(dto).filter(([_, v]) => v !== undefined),
+    );
+
     return this.prisma.experience.update({
       where: { id },
-      data: dto,
+      data: cleanDto,
     });
   }
 

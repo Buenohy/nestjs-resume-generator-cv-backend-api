@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from "@nestjs/common";
 import { ExperienceService } from "./experience.service";
 import { CreateExperienceDto } from "./dto/create-experience.dto";
@@ -20,9 +21,10 @@ export class ExperienceController {
     return this.experienceService.create(createExperienceDto);
   }
 
+  // O @Query captura ex: /experiences?language=pt
   @Get()
-  findAll() {
-    return this.experienceService.findAll();
+  findAll(@Query("language") language?: string) {
+    return this.experienceService.findAll(language);
   }
 
   @Patch(":id")
