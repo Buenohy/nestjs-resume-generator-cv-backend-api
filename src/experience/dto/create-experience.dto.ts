@@ -3,6 +3,7 @@ import { z } from "zod";
 
 // Definição estrita do esquema de criação usando Zod
 export const CreateExperienceSchema = z.object({
+  language: z.enum(["pt", "en"]),
   role: z.string().min(1, "Cargo é obrigatório"),
   company: z.string().min(1, "Empresa é obrigatória"),
   url: z.string().url("URL inválida").optional().nullable(),

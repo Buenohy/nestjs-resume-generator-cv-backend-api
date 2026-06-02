@@ -15,6 +15,7 @@ datasource db {
 // 🧱 MODELO 1: Repositório do Full Content (Experiências Avulsas)
 model Experience {
   id        String   @id @default(uuid())
+  language  String
   role      String // Cargo (ex: Frontend Developer)
   company   String // Empresa (ex: Google)
   url       String? // URL da Empresa (opcional)
