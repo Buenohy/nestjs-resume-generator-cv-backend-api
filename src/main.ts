@@ -21,6 +21,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ZodValidationPipe());
 
   await app.listen(3001, "0.0.0.0");
-  console.log(`🚀 Backend rodando na porta 3001 com Fastify`);
+  console.log(`🚀 Backend running on port 3001 with Fastify`);
 }
 bootstrap();
