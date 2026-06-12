@@ -21,7 +21,6 @@ export class ExperienceController {
     return this.experienceService.create(createExperienceDto);
   }
 
-  // O @Query captura ex: /experiences?language=pt
   @Get()
   findAll(@Query("language") language?: string) {
     return this.experienceService.findAll(language);
