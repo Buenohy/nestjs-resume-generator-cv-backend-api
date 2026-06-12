@@ -12,11 +12,15 @@ export class PrismaService
   constructor() {
     const connectionString = process.env.DATABASE_URL;
 
-    // Cria o pool de conexões passando as credenciais carregadas do .env
+    if (!connectionString) {
+      throw new Error("DATABASE_URL environment variable is missing");
+    }
+
+    // Create the connection pool using the credentials from environment variables
     const pool = new Pool({ connectionString });
     const adapter = new PrismaPg(pool);
 
-    // Inicializa o Prisma Client v7 com o adaptador seguro do Postgres
+    // Initialize Prisma Client using the PostgreSQL driver adapter
     super({ adapter });
   }
 
