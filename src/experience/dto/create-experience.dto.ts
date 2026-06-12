@@ -3,14 +3,14 @@ import { z } from "zod";
 
 export const CreateExperienceSchema = z.object({
   language: z.enum(["pt", "en"], {
-    message: "O idioma é obrigatório ('pt' ou 'en')",
+    message: "Language is required ('pt' or 'en')",
   }),
-  role: z.string().min(1, "Cargo é obrigatório"),
-  company: z.string().min(1, "Empresa é obrigatória"),
-  // url e date não são nativos em todas as views, aceitamos strings vazias ou nulas
+  role: z.string().min(1, "Role is required"),
+  company: z.string().min(1, "Company is required"),
+  // Optional fields representing URLs or dates; empty or null values are accepted
   url: z.string().optional().nullable(),
   date: z.string().optional(),
-  // Arrays com fallback automático para vazio se não forem enviados
+  // Arrays defaulting to empty arrays if not provided
   details: z.array(z.string()).default([]),
   stacks: z.array(z.string()).default([]),
 });
