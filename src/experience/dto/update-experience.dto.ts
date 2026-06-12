@@ -1,7 +1,7 @@
 import { createZodDto } from "nestjs-zod";
 import { CreateExperienceSchema } from "./create-experience.dto";
 
-// O .partial() do Zod faz todos os campos se tornarem opcionais para a Edição (PATCH)
+// Generates an optional schema representation of CreateExperienceSchema for PATCH requests
 export const UpdateExperienceSchema = CreateExperienceSchema.partial();
 
 export class UpdateExperienceDto extends createZodDto(UpdateExperienceSchema) {}
