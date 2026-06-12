@@ -7,19 +7,17 @@ import { Prisma } from "@prisma/client";
 export class HistoryService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // Salva um novo snapshot de currículo no banco de dados
   async create(dto: CreateHistoryDto) {
     return this.prisma.resumeHistory.create({
       data: {
         targetRole: dto.targetRole,
         targetCompany: dto.targetCompany,
-        // CORRIGIDO: Typecast seguro para a tipagem de entrada JSON do Prisma v7
+        // Explicit typecast to support Prisma's native JSON input format safely
         cvPayload: dto.cvPayload as Prisma.InputJsonValue,
       },
     });
   }
 
-  // Lista todos os históricos ordenados do mais recente para o mais antigo
   async findAll() {
     return this.prisma.resumeHistory.findMany({
       orderBy: {
