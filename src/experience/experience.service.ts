@@ -7,19 +7,17 @@ import { UpdateExperienceDto } from "./dto/update-experience.dto";
 export class ExperienceService {
   constructor(private readonly prisma: PrismaService) {}
 
-  // Criar nova experiência
   async create(dto: CreateExperienceDto) {
     return this.prisma.experience.create({
-      // Como mapeamos url de forma opcional/null no Zod, normalizamos para salvar vazio no banco se não vier nada
       data: {
         ...dto,
+        // Fallback for null/optional fields to prevent database constraint issues
         url: dto.url ?? "",
         date: dto.date ?? "",
       },
     });
   }
 
-  // Listar todas as experiências, filtrando opcionalmente pelo idioma da UI
   async findAll(language?: string) {
     return this.prisma.experience.findMany({
       where: language ? { language } : undefined,
@@ -29,19 +27,18 @@ export class ExperienceService {
     });
   }
 
-  // Atualizar experiência existente por ID (Edição)
   async update(id: string, dto: UpdateExperienceDto) {
     const experience = await this.prisma.experience.findUnique({
       where: { id },
     });
 
     if (!experience) {
-      throw new NotFoundException("Experiência não encontrada");
+      throw new NotFoundException("Experience not found");
     }
 
-    // Limpa eventuais undefined do dto antes de atualizar
+    // Filter out undefined payload properties to prevent overriding db values with undefined
     const cleanDto = Object.fromEntries(
-      Object.entries(dto).filter(([_, v]) => v !== undefined),
+      Object.entries(dto).filter(([_, value]) => value !== undefined),
     );
 
     return this.prisma.experience.update({
@@ -50,14 +47,13 @@ export class ExperienceService {
     });
   }
 
-  // Excluir experiência existente por ID
   async remove(id: string) {
     const experience = await this.prisma.experience.findUnique({
       where: { id },
     });
 
     if (!experience) {
-      throw new NotFoundException("Experiência não encontrada");
+      throw new NotFoundException("Experience not found");
     }
 
     await this.prisma.experience.delete({
