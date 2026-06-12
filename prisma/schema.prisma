@@ -1,8 +1,6 @@
 // This is your Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
-// Get a free hosted Postgres database in seconds: `npx create-db`
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,26 +9,26 @@ datasource db {
   provider = "postgresql"
 }
 
-// 🧱 MODELO 1: Repositório do Full Content (Experiências Avulsas)
+// Individual experience records
 model Experience {
   id        String   @id @default(uuid())
   language  String
-  role      String // Cargo (ex: Frontend Developer)
-  company   String // Empresa (ex: Google)
-  url       String? // URL da Empresa (opcional)
-  date      String // Período (ex: "Janeiro 2022 - Atualmente")
-  details   String[] // Detalhes do Projeto (Nativo do Postgres)
-  stacks    String[] // Tecnologias usadas (Stacks)
+  role      String // Job title (e.g., Frontend Developer)
+  company   String // Company (e.g., Google)
+  url       String? // Company URL (optional)
+  date      String // Period (e.g., "January 2022 - Present")
+  details   String[] // List of project details and achievements
+  stacks    String[] // Technologies used
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-// 📜 MODELO 2: Histórico do Resume Builder (Snapshots dos currículos criados)
+// Snapshots of generated CVs
 model ResumeHistory {
   id            String   @id @default(uuid())
-  orderNumber   Int      @unique @default(autoincrement()) // ID sequencial #1, #2...
-  targetRole    String // Cargo Alvo
-  targetCompany String // Empresa Alvo
-  cvPayload     Json // JSONB seguro e dinâmico para salvar todo o CV
+  orderNumber   Int      @unique @default(autoincrement()) // Sequential order tracking number
+  targetRole    String // Target role
+  targetCompany String // Target company
+  cvPayload     Json // JSON payload containing the complete snapshot
   createdAt     DateTime @default(now())
 }
