@@ -16,8 +16,16 @@ export class PrismaService
       throw new Error("DATABASE_URL environment variable is missing");
     }
 
+    const isLocalhost =
+      connectionString.includes("localhost") ||
+      connectionString.includes("127.0.0.1");
+
     // Create the connection pool using the credentials from environment variables
-    const pool = new Pool({ connectionString });
+    const pool = new Pool({
+      connectionString,
+      ssl: isLocalhost ? false : { rejectUnauthorized: false },
+    });
+
     const adapter = new PrismaPg(pool);
 
     // Initialize Prisma Client using the PostgreSQL driver adapter
